@@ -1,0 +1,113 @@
+openapi: 3.0.3
+info:
+  title: API de Productos Reactiva
+  version: 1.0.0
+  description: >
+    API CRUD reactiva para la gestión de productos utilizando **Quarkus**, **MongoDB** y **Mutiny**.
+    Expuesta mediante **SmallRye OpenAPI** con documentación en **Swagger UI**.
+servers:
+  - url: http://localhost:8080
+    description: Servidor local de desarrollo
+
+paths:
+  /producto:
+    get:
+      summary: Listar todos los productos
+      description: Obtiene la lista completa de productos desde MongoDB.
+      operationId: listarProductos
+      responses:
+        "200":
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Producto"
+    post:
+      summary: Crear un nuevo producto
+      description: Registra un nuevo producto en la base de datos.
+      operationId: crearProducto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Producto"
+      responses:
+        "201":
+          description: Producto creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producto"
+
+  /producto/{id}:
+    get:
+      summary: Buscar producto por ID
+      description: Devuelve un producto según su ID.
+      operationId: buscarProducto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producto"
+        "404":
+          description: Producto no encontrado
+
+    put:
+      summary: Actualizar producto existente
+      description: Actualiza los datos de un producto existente.
+      operationId: actualizarProducto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Producto"
+      responses:
+        "200":
+          description: Producto actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producto"
+
+    delete:
+      summary: Eliminar producto
+      description: Elimina un producto por su ID.
+      operationId: eliminarProducto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Producto eliminado correctamente
+
+components:
+  schemas:
+    Producto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 64b3cfcf44e0c908345fa021
+        nombre:
+          type
